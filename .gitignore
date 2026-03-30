@@ -1,0 +1,8 @@
+node_modules/
+dist/
+zenstack/dev.db
+zenstack/~schema.prisma
+zenstack/migrations/
+zenstack/schema.ts
+zenstack/models.ts
+zenstack/input.ts

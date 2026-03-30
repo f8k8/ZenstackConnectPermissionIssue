@@ -1,0 +1,35 @@
+datasource db {
+    provider = 'sqlite'
+    url      = 'file:./dev.db'
+}
+
+plugin policy {
+    provider = '@zenstackhq/plugin-policy'
+}
+
+model User {
+  id            String         @id @default(uuid())
+  name          String?
+  email         String         @unique
+  children      Child[]        @relation("ParentChildren") @meta("definition", "The children of the user")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt @default(now())
+
+  @@allow('create', true)
+  @@allow('read,update', auth() != null && id == auth().id)
+}
+
+model Child {
+  id              String           @id @default(uuid())
+  name            String
+  dob             DateTime         @meta("definition", "Date of birth of the child")
+  parents         User[]           @relation("ParentChildren") @meta("definition", "The parents of the child")
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt @default(now())
+
+  // Any authenticated user can create a child (they link themselves as parent in the same operation)
+  @@allow('create', auth() != null)
+  // Only parents of the child can read, update, or delete it
+  @@allow('read,update', auth() != null && parents?[id == auth().id])
+  @@allow('delete', auth() != null && parents?[id == auth().id])
+}
