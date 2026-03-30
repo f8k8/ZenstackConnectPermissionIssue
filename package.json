@@ -1,0 +1,24 @@
+{
+  "name": "zenstack-connect-permission-issue",
+  "version": "1.0.0",
+  "description": "Reproduction of a ZenStack V3 permission issue with many-to-many connect operations",
+  "type": "commonjs",
+  "scripts": {
+    "build": "zenstack generate && zenstack db push",
+    "postinstall": "npm run build && ts-node src/seed.ts",
+    "start": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "@zenstackhq/orm": "^3.5.2",
+    "@zenstackhq/plugin-policy": "^3.5.2",
+    "@zenstackhq/schema": "^3.5.2",
+    "better-sqlite3": "^12.8.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.15.3",
+    "@zenstackhq/cli": "^3.5.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
